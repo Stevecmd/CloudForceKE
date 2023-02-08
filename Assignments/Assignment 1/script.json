@@ -1,0 +1,172 @@
+  "Resources": {
+    "VPC": {
+      "Type": "AWS::EC2::VPC",
+      "Properties": {
+        "CidrBlock": "10.0.0.0/16",
+        "EnableDnsSupport": true,
+        "EnableDnsHostnames": true
+      }
+    },
+    "PublicSubnet": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "VpcId": {
+          "Ref": "VPC"
+        },
+        "CidrBlock": "10.0.2.0/24",
+        "MapPublicIpOnLaunch": true
+      }
+    },
+    "PrivateSubnet": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "VpcId": {
+          "Ref": "VPC"
+        },
+        "CidrBlock": "10.0.1.0/24",
+        "MapPublicIpOnLaunch": false
+      }
+    },
+    "WebServerSecurityGroup": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "VpcId": {
+          "Ref": "VPC"
+        },
+        "GroupDescription": "Allow HTTP and SSH access",
+        "SecurityGroupIngress": [
+          {
+            "IpProtocol": "tcp",
+            "FromPort": 22,
+            "ToPort": 22,
+            "CidrIp": "0.0.0.0/0"
+          },
+          {
+            "IpProtocol": "tcp",
+            "FromPort": 80,
+            "ToPort": 80,
+            "CidrIp": "0.0.0.0/0"
+          }
+        ]
+      }
+    },
+    "InstanceSecurityGroup": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "VpcId": {
+          "Ref": "VPC"
+        },
+        "GroupDescription": "Allow SSH access",
+        "SecurityGroupIngress": [
+          {
+            "IpProtocol": "tcp",
+            "FromPort": 22,
+            "ToPort": 22,
+            "CidrIp": "0.0.0.0/0"
+          }
+        ]
+      }
+    },
+    "InstanceLaunchConfig": {
+      "Type": "AWS::AutoScaling::LaunchConfiguration",
+      "Properties": {
+        "ImageId": "ami-0c55b159cbfafe1f0",
+        "InstanceType": "t2.micro",
+        "KeyName": "voc-key",
+        "SecurityGroups": [
+          {
+            "Ref": "InstanceSecurityGroup"
+          }
+        ],
+        "UserData": {
+          "Fn::Base64": {
+            "Fn::Join": [
+              "",
+              [
+                "#!/bin/bash\n",
+                "sudo yum update -y",
+                "sudo yum install httpd -y",
+                "sudo systemctl start httpd",
+                "sudo system ctl enable httpd",
+"sudo echo 'Welcome to Apache' > /var/www/html/index.html"
+]
+]
+}
+}
+}
+},
+"AutoScalingGroup": {
+"Type": "AWS::AutoScaling::AutoScalingGroup",
+"Properties": {
+"VPCZoneIdentifier": [
+{
+"Ref": "PrivateSubnet"
+}
+],
+"LaunchConfigurationName": {
+"Ref": "InstanceLaunchConfig"
+},
+"MinSize": "10",
+"MaxSize": "10",
+"DesiredCapacity": "10"
+}
+},
+"LoadBalancer": {
+"Type": "AWS::ElasticLoadBalancingV2::LoadBalancer",
+"Properties": {
+"Subnets": [
+{
+"Ref": "PublicSubnet"
+}
+],
+"SecurityGroups": [
+{
+"Ref": "WebServerSecurityGroup"
+}
+]
+}
+},
+"LoadBalancerListener": {
+"Type": "AWS::ElasticLoadBalancingV2::Listener",
+"Properties": {
+"LoadBalancerArn": {
+"Ref": "LoadBalancer"
+},
+"Port": 80,
+"Protocol": "HTTP"
+}
+},
+"TargetGroup": {
+"Type": "AWS::ElasticLoadBalancingV2::TargetGroup",
+"Properties": {
+"VpcId": {
+"Ref": "VPC"
+},
+"Port": 80,
+"Protocol": "HTTP",
+"TargetType": "instance"
+}
+},
+"LoadBalancerTargetGroupAttachment": {
+"Type": "AWS::ElasticLoadBalancingV2::TargetGroupAttachment",
+"Properties": {
+"TargetGroupArn": {
+"Ref": "TargetGroup"
+},
+"AutoScalingGroupName": {
+"Ref": "AutoScalingGroup"
+}
+}
+}
+},
+"Outputs": {
+"LoadBalancerDNSName": {
+"Value": {
+"Fn::GetAtt": [
+"LoadBalancer",
+"DNSName"
+]
+}
+}
+}
+}
