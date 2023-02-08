@@ -1,6 +1,6 @@
 **<em> Assignment: :point_right: Creating a cloud formation template. :smirk: </em>**
 
-This AWS CloudFormation template creates and configures the following resources in Amazon Web Services (AWS):
+This AWS CloudFormation template 'script.json' creates and configures the following resources:
 
 ---
 
