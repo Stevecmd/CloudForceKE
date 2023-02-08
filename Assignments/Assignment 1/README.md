@@ -38,7 +38,9 @@ This AWS CloudFormation template creates and configures the following resources 
 Raw instructions:
 <br/>
 <img
-  src="git@github.com:Stevecmd/CloudForceKE.git/Assignments/Assignment 1/Instructions.jpg"
+  src="https://github.com/Stevecmd/CloudForceKE/blob/1352d091239217d446ca942cd209d503c10f5a6f/Assignments/Assignment%201/Instructions.jpeg"
   alt="Assignment 1 instructions"
   title="Assignment 1"
   style="display: inline-block; margin: 0 auto; max-width: 300px">
+
+  
