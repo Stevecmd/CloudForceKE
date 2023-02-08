@@ -41,7 +41,6 @@ Raw instructions:
   src="https://github.com/Stevecmd/CloudForceKE/blob/1352d091239217d446ca942cd209d503c10f5a6f/Assignments/Assignment%201/Instructions.jpeg"
   alt="Assignment 1 instructions"
   title="Assignment 1"
-  class="center"
   style="vertical-align:middle;margin:0px 100px">
 
   
