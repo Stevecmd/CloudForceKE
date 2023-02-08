@@ -42,6 +42,6 @@ Raw instructions:
   alt="Assignment 1 instructions"
   title="Assignment 1"
   class="center"
-  style="display: inline-block; margin: 10 auto; width='50%' height='50%'">
+  style="vertical-align:middle;margin:0px 100px">
 
   
