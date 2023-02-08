@@ -31,6 +31,14 @@ This AWS CloudFormation template creates and configures the following resources 
 > 9. An attachment of the target group to the load balancer.
 <br/>
 
->> Upon deployment, this CloudFormation template creates a fully functioning infrastructure, with a load-balanced, auto-scaling group of web servers.
+>> Upon deployment, this CloudFormation template creates fully functioning infrastructure; a load-balanced, auto-scaling group of web servers.
 
 <br/>
+
+Raw instructions:
+<br/>
+<img
+  src="git@github.com:Stevecmd/CloudForceKE.git/Assignments/Assignment 1/Instructions.jpg"
+  alt="Assignment 1 instructions"
+  title="Assignment 1"
+  style="display: inline-block; margin: 0 auto; max-width: 300px">
